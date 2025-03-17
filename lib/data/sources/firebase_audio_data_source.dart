@@ -33,9 +33,8 @@ class FirebaseAudioDataSource implements AudioDataSource {
       String fileName = 'audios/${DateTime.now().millisecondsSinceEpoch}.aac';
       Reference ref = storage.ref().child(fileName);
 
-      // ✅ Agregar metadatos explícitos para evitar el error en Firebase
       SettableMetadata metadata = SettableMetadata(
-        contentType: "audio/aac", // Especifica el tipo MIME
+        contentType: "audio/aac",
       );
 
       UploadTask uploadTask = ref.putFile(file, metadata);
