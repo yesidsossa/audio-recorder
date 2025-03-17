@@ -20,11 +20,15 @@ class AudioRecorderScreen extends ConsumerWidget {
           ElevatedButton(
             onPressed: () async {
               if (isRecording) {
-                await ref.read(stopAudioProvider)();
-                ref.read(recordingStateProvider.notifier).state = false;
+                String? result = await ref.read(stopAudioProvider)();
+                if (result != null) {
+                  ref.read(recordingStateProvider.notifier).state = false;
+                }
               } else {
-                await ref.read(recordAudioProvider)();
-                ref.read(recordingStateProvider.notifier).state = true;
+                String? result = await ref.read(recordAudioProvider)();
+                if (result != null) {
+                  ref.read(recordingStateProvider.notifier).state = true;
+                }
               }
             },
             child: Text(isRecording ? 'Detener' : 'Grabar'),

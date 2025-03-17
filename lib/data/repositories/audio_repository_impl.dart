@@ -41,11 +41,22 @@ class AudioRepositoryImpl implements AudioRepository {
       return null;
     }
 
-    await _recorder.stopRecorder();
-    print("✅ Grabación detenida. Archivo guardado en: $_currentFilePath");
+    try {
+      await _recorder.stopRecorder();
+      print("✅ Grabación detenida. Archivo guardado en: $_currentFilePath");
 
-    return _currentFilePath;
+      if (File(_currentFilePath!).existsSync()) {
+        return _currentFilePath;
+      } else {
+        print("🚨 Error: Archivo no encontrado después de detener la grabación.");
+        return null;
+      }
+    } catch (e) {
+      print("🚨 Error al detener la grabación: $e");
+      return null;
+    }
   }
+
 
   @override
   Future<String?> uploadAudio(String filePath) async {
