@@ -5,7 +5,7 @@ import 'screens/audio_recorder_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); // ✅ INICIALIZAMOS FIREBASE AQUÍ
+  await Firebase.initializeApp(); 
   runApp(const ProviderScope(child: MyApp()));
 }
 

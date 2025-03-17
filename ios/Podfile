@@ -1,17 +1,13 @@
-# Definir la versión mínima de iOS
-platform :ios, '13.0'  # 🔹 Asegura que iOS 13 sea la versión mínima (Firebase ya no soporta iOS 12)
+platform :ios, '13.0'
 
-# Desactivar estadísticas de CocoaPods para mejorar velocidad de compilación
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
-# Configuración del proyecto de Xcode
 project 'Runner', {
   'Debug' => :debug,
   'Profile' => :release,
   'Release' => :release,
 }
 
-# Obtener ruta de Flutter
 def flutter_root
   generated_xcode_build_settings_path = File.expand_path(File.join('..', 'Flutter', 'Generated.xcconfig'), __FILE__)
   unless File.exist?(generated_xcode_build_settings_path)
@@ -25,7 +21,6 @@ def flutter_root
   raise "FLUTTER_ROOT not found in #{generated_xcode_build_settings_path}. Try deleting Generated.xcconfig, then run flutter pub get"
 end
 
-# Cargar herramientas de Flutter
 require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelper'), flutter_root)
 
 flutter_ios_podfile_setup

@@ -8,7 +8,6 @@ class UploadNotifier extends StateNotifier<double> {
 
   Future<String?> uploadToFirebase(File file) async {
     try {
-      // 🚀 Verificar si Firebase está inicializado antes de usarlo
       if (Firebase.apps.isEmpty) {
         print("🔥 Firebase no estaba inicializado. Inicializando...");
         await Firebase.initializeApp();

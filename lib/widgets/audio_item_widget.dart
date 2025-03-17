@@ -50,7 +50,6 @@ class _AudioItemWidgetState extends State<AudioItemWidget> {
         _duration = Duration.zero;
       });
 
-      // ✅ Configurar la actualización del slider
       await _player!.setSubscriptionDuration(const Duration(milliseconds: 500));
 
       _progressSubscription?.cancel();

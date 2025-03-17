@@ -55,7 +55,7 @@ class _AudioRecorderScreenState extends ConsumerState<AudioRecorderScreen> {
                 if (path != null) {
                   String? downloadUrl = await ref.read(uploadProvider.notifier).uploadToFirebase(File(path));
                   if (downloadUrl != null) {
-                    _fetchRecordings(); // 🔥 ACTUALIZAR LISTA DE AUDIOS DESPUÉS DE SUBIR
+                    _fetchRecordings();
                   }
                 }
               } else {
