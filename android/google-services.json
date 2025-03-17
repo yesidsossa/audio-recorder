@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "73886664889",
+    "project_id": "telepatia-cdce1",
+    "storage_bucket": "telepatia-cdce1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:73886664889:android:6627b81e0e5297f1fff368",
+        "android_client_info": {
+          "package_name": "com.example.telepatia_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYDtoCt6IjkhGIpLX5whWIr4nAnlFxwAs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
