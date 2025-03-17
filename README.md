@@ -39,7 +39,7 @@ We use **Riverpod** to manage dependencies and global states efficiently. This a
 
 | Loader | Audio List |
 |-----------|-----------|
-| ![Recording](docs/screenshots/loader.png) | ![Audio List](docs/screenshots/audio_list.png) | 
+| ![Recording](docs/screenshot/loader.png) | ![Audio List](docs/screenshot/audio_list.png) | 
 
 ---
 
