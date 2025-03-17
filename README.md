@@ -21,7 +21,7 @@ We use **Riverpod** to manage dependencies and global states efficiently. This a
 ✅ Optimized state management with providers.  
 
 ### 📌 **Architecture Diagram**
-![Clean Architecture Diagram](docs/diagrams/architecture.png)
+![Clean Architecture Diagram](docs/diagrams/architecture.jpeg)
 
 ---
 
