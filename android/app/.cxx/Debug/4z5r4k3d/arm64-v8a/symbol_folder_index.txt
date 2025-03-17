@@ -1,0 +1,1 @@
+/Users/yesidhernandez/Documents/Projects/Mobile/Flutter/telepatia_app/audio-recorder/build/app/intermediates/cxx/Debug/4z5r4k3d/obj/arm64-v8a

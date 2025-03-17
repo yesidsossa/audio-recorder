@@ -22,11 +22,32 @@ class FirebaseAudioDataSource implements AudioDataSource {
 
   @override
   Future<String?> uploadAudio(String filePath) async {
-    String fileName = 'audios/${DateTime.now().millisecondsSinceEpoch}.aac';
-    Reference ref = storage.ref().child(fileName);
-    UploadTask uploadTask = ref.putFile(File(filePath));
+    try {
+      File file = File(filePath);
 
-    TaskSnapshot snapshot = await uploadTask;
-    return await snapshot.ref.getDownloadURL();
+      if (!file.existsSync()) {
+        print("🚨 Error: El archivo no existe en la ruta: $filePath");
+        return null;
+      }
+
+      String fileName = 'audios/${DateTime.now().millisecondsSinceEpoch}.aac';
+      Reference ref = storage.ref().child(fileName);
+
+      // ✅ Agregar metadatos explícitos para evitar el error en Firebase
+      SettableMetadata metadata = SettableMetadata(
+        contentType: "audio/aac", // Especifica el tipo MIME
+      );
+
+      UploadTask uploadTask = ref.putFile(file, metadata);
+      TaskSnapshot snapshot = await uploadTask;
+
+      String downloadUrl = await snapshot.ref.getDownloadURL();
+      print("✅ Archivo subido correctamente: $downloadUrl");
+      return downloadUrl;
+    } catch (e, stacktrace) {
+      print("🚨 Error al subir el archivo: $e");
+      print("🛠️ Stacktrace: $stacktrace");
+      return null;
+    }
   }
 }

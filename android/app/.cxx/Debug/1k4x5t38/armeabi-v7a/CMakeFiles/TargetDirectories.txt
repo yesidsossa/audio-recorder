@@ -1,0 +1,2 @@
+/Users/yesidhernandez/Documents/Projects/Mobile/Flutter/telepatia_app/audio-recorder/android/app/.cxx/Debug/1k4x5t38/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/yesidhernandez/Documents/Projects/Mobile/Flutter/telepatia_app/audio-recorder/android/app/.cxx/Debug/1k4x5t38/armeabi-v7a/CMakeFiles/rebuild_cache.dir

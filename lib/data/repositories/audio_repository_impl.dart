@@ -3,6 +3,7 @@ import 'package:flutter_sound/flutter_sound.dart';
 import '../../domain/entities/audio.dart';
 import '../../domain/repositories/audio_repository.dart';
 import '../sources/firebase_audio_data_source.dart';
+import 'package:path_provider/path_provider.dart';
 
 class AudioRepositoryImpl implements AudioRepository {
   final FirebaseAudioDataSource firebaseDataSource;
@@ -18,7 +19,10 @@ class AudioRepositoryImpl implements AudioRepository {
         await _recorder.openRecorder();
       }
 
-      Directory tempDir = Directory.systemTemp;
+      Directory tempDir = Platform.isAndroid
+          ? await getApplicationDocumentsDirectory()
+          : Directory.systemTemp;
+
       _currentFilePath = '${tempDir.path}/audio_${DateTime.now().millisecondsSinceEpoch}.aac';
 
       await _recorder.startRecorder(
@@ -45,7 +49,11 @@ class AudioRepositoryImpl implements AudioRepository {
       await _recorder.stopRecorder();
       print("✅ Grabación detenida. Archivo guardado en: $_currentFilePath");
 
-      if (File(_currentFilePath!).existsSync()) {
+      final File audioFile = File(_currentFilePath!);
+
+      if (audioFile.existsSync()) {
+        print("✅ Archivo de audio verificado en la ruta: ${audioFile.path}");
+        print("📏 Tamaño del archivo: ${audioFile.lengthSync()} bytes");
         return _currentFilePath;
       } else {
         print("🚨 Error: Archivo no encontrado después de detener la grabación.");
