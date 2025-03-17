@@ -1,33 +1,35 @@
-import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../domain/usecases/upload_audio.dart';
+import '../../domain/repositories/audio_repository.dart';
 import '../../presentation/providers/audio_provider.dart';
-import '../../data/repositories/audio_repository_impl.dart';
+import 'upload_audio.dart';
 
 class StopAudio {
-  final AudioRepositoryImpl repository;
+  final AudioRepository repository;
   final UploadAudio uploadAudio;
+  final Ref ref;
 
-  StopAudio(this.repository, this.uploadAudio);
+  StopAudio(this.repository, this.uploadAudio, this.ref);
 
-  Future<void> call(WidgetRef ref) async {
-    ref.read(recordingStateProvider.notifier).state = false;
+  Future<String?> call() async {
+    String? filePath = await repository.stopRecording();
 
-    final filePath = await repository.stopRecording();
-    if (filePath != null && File(filePath).existsSync() && File(filePath).lengthSync() > 1000) {
-      print("✅ Grabación finalizada: $filePath");
+    if (filePath != null) {
+      print("✅ Archivo de audio listo para subir: $filePath");
 
-      ref.read(uploadProgressProvider.notifier).state = 0.0;
       String? downloadUrl = await uploadAudio(filePath);
 
       if (downloadUrl != null) {
-        ref.refresh(audioListProvider);
-        print("📤 Archivo subido con éxito: $downloadUrl");
+        print("📤 Archivo subido correctamente: $downloadUrl");
+
+        ref.invalidate(audioListProvider);
+
+        return downloadUrl;
       } else {
         print("🚨 Error subiendo archivo.");
       }
     } else {
-      print("🚨 Archivo de audio inválido. No se subirá.");
+      print("🚨 No hay grabación válida para subir.");
     }
+    return null;
   }
 }

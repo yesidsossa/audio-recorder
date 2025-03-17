@@ -1,14 +1,20 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../presentation/providers/audio_provider.dart';
-import '../../data/repositories/audio_repository_impl.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+import '../../domain/repositories/audio_repository.dart';
 
 class RecordAudio {
-  final AudioRepositoryImpl repository;
+  final AudioRepository repository;
+
   RecordAudio(this.repository);
 
-  Future<void> call(WidgetRef ref) async {
-    final filePath = await repository.recordAudio();
-    ref.read(currentFilePathProvider.notifier).state = filePath;
-    ref.read(recordingStateProvider.notifier).state = true;
+  Future<String?> call() async {
+    final status = await Permission.microphone.request();
+    if (status.isDenied) {
+      print("🚨 Permiso de micrófono DENEGADO.");
+      return null;
+    }
+
+    return await repository.recordAudio();
   }
+
 }

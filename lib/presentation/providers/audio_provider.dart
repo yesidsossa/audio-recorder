@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_sound/flutter_sound.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import '../../domain/usecases/get_audios.dart';
 import '../../domain/usecases/record_audio.dart';
@@ -14,10 +13,13 @@ final audioRepositoryProvider = Provider((ref) => AudioRepositoryImpl(ref.read(f
 
 final getAudiosProvider = Provider((ref) => GetAudios(ref.read(audioRepositoryProvider)));
 final recordAudioProvider = Provider((ref) => RecordAudio(ref.read(audioRepositoryProvider)));
+final uploadAudioProvider = Provider((ref) => UploadAudio(ref.read(audioRepositoryProvider)));
+
 final stopAudioProvider = Provider((ref) => StopAudio(
   ref.read(audioRepositoryProvider),
   ref.read(uploadAudioProvider),
-));final uploadAudioProvider = Provider((ref) => UploadAudio(ref.read(audioRepositoryProvider)));
+  ref,
+));
 
 final audioListProvider = FutureProvider<List<Audio>>((ref) async {
   return await ref.read(getAudiosProvider)();
@@ -25,14 +27,3 @@ final audioListProvider = FutureProvider<List<Audio>>((ref) async {
 
 final recordingStateProvider = StateProvider<bool>((ref) => false);
 final uploadProgressProvider = StateProvider<double>((ref) => 0.0);
-final currentFilePathProvider = StateProvider<String?>((ref) => null);
-
-final audioRecorderProvider = StateNotifierProvider<AudioRecorderNotifier, FlutterSoundRecorder>(
-      (ref) => AudioRecorderNotifier(),
-);
-
-class AudioRecorderNotifier extends StateNotifier<FlutterSoundRecorder> {
-  AudioRecorderNotifier() : super(FlutterSoundRecorder()) {
-    state.openRecorder();
-  }
-}
