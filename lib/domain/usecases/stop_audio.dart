@@ -1,20 +1,19 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_sound/flutter_sound.dart';
 import '../../domain/usecases/upload_audio.dart';
 import '../../presentation/providers/audio_provider.dart';
+import '../../data/repositories/audio_repository_impl.dart';
 
 class StopAudio {
+  final AudioRepositoryImpl repository;
   final UploadAudio uploadAudio;
-  StopAudio(this.uploadAudio);
 
-  Future<void> call(WidgetRef ref, FlutterSoundRecorder recorder) async {
+  StopAudio(this.repository, this.uploadAudio);
+
+  Future<void> call(WidgetRef ref) async {
     ref.read(recordingStateProvider.notifier).state = false;
-    await recorder.stopRecorder();
 
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    String? filePath = ref.read(currentFilePathProvider);
+    final filePath = await repository.stopRecording();
     if (filePath != null && File(filePath).existsSync() && File(filePath).lengthSync() > 1000) {
       print("✅ Grabación finalizada: $filePath");
 

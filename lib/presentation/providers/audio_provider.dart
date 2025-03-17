@@ -9,41 +9,30 @@ import '../../domain/entities/audio.dart';
 import '../../data/repositories/audio_repository_impl.dart';
 import '../../data/sources/firebase_audio_data_source.dart';
 
-/// **Fuente de datos Firebase**
-final firebaseAudioSourceProvider = Provider(
-        (ref) => FirebaseAudioDataSource(FirebaseStorage.instance));
+final firebaseAudioSourceProvider = Provider((ref) => FirebaseAudioDataSource(FirebaseStorage.instance));
+final audioRepositoryProvider = Provider((ref) => AudioRepositoryImpl(ref.read(firebaseAudioSourceProvider)));
 
-/// **Repositorio de audios**
-final audioRepositoryProvider = Provider(
-        (ref) => AudioRepositoryImpl(ref.read(firebaseAudioSourceProvider)));
+final getAudiosProvider = Provider((ref) => GetAudios(ref.read(audioRepositoryProvider)));
+final recordAudioProvider = Provider((ref) => RecordAudio(ref.read(audioRepositoryProvider)));
+final stopAudioProvider = Provider((ref) => StopAudio(
+  ref.read(audioRepositoryProvider),
+  ref.read(uploadAudioProvider),
+));final uploadAudioProvider = Provider((ref) => UploadAudio(ref.read(audioRepositoryProvider)));
 
-/// **Casos de uso**
-final getAudiosProvider =
-Provider((ref) => GetAudios(ref.read(audioRepositoryProvider)));
-final recordAudioProvider =
-Provider((ref) => RecordAudio(ref.read(audioRepositoryProvider)));
-final stopAudioProvider =
-Provider((ref) => StopAudio(ref.read(uploadAudioProvider)));
-final uploadAudioProvider =
-Provider((ref) => UploadAudio(ref.read(audioRepositoryProvider)));
-
-/// **Lista de audios obtenidos desde Firebase**
 final audioListProvider = FutureProvider<List<Audio>>((ref) async {
   return await ref.read(getAudiosProvider)();
 });
 
-/// **Estado de grabación (si estamos grabando o no)**
 final recordingStateProvider = StateProvider<bool>((ref) => false);
-
-/// **Estado de progreso de carga a Firebase**
 final uploadProgressProvider = StateProvider<double>((ref) => 0.0);
-
-/// **Variable para almacenar la ruta del archivo actual**
 final currentFilePathProvider = StateProvider<String?>((ref) => null);
 
-/// **Grabador de audio (para mantener el estado del grabador)**
-final audioRecorderProvider = Provider((ref) {
-  final recorder = FlutterSoundRecorder();
-  recorder.openRecorder();
-  return recorder;
-});
+final audioRecorderProvider = StateNotifierProvider<AudioRecorderNotifier, FlutterSoundRecorder>(
+      (ref) => AudioRecorderNotifier(),
+);
+
+class AudioRecorderNotifier extends StateNotifier<FlutterSoundRecorder> {
+  AudioRecorderNotifier() : super(FlutterSoundRecorder()) {
+    state.openRecorder();
+  }
+}

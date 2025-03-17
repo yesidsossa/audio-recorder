@@ -8,7 +8,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 class AudioRepositoryImpl implements AudioRepository {
   final FirebaseAudioDataSource remoteDataSource;
-  FlutterSoundRecorder? _recorder;
+  late FlutterSoundRecorder _recorder;
   String? _currentFilePath;
 
   AudioRepositoryImpl(this.remoteDataSource) {
@@ -23,29 +23,18 @@ class AudioRepositoryImpl implements AudioRepository {
 
   @override
   Future<String?> recordAudio() async {
-    PermissionStatus status = await Permission.microphone.status;
-
-    if (status.isDenied || status.isRestricted) {
-      status = await Permission.microphone.request();
-      if (!status.isGranted) {
-        throw Exception('❌ Permiso de micrófono denegado.');
-      }
+    PermissionStatus status = await Permission.microphone.request();
+    if (!status.isGranted) {
+      throw Exception('❌ Permiso de micrófono denegado.');
     }
 
     Directory tempDir = await getTemporaryDirectory();
     _currentFilePath = '${tempDir.path}/audio_${DateTime.now().millisecondsSinceEpoch}.aac';
 
-    await _recorder!.openRecorder();
-
-    if (!_recorder!.isRecording) {
-      print("✅ FlutterSoundRecorder inicializado correctamente.");
-    }
-
-    await _recorder!.startRecorder(
-      toFile: _currentFilePath,
+    await _recorder.openRecorder();
+    await _recorder.startRecorder(
+      toFile: _currentFilePath!,
       codec: Codec.aacADTS,
-      bitRate: 128000,
-      sampleRate: 44100,
     );
 
     print("🎙️ Grabando en: $_currentFilePath");
@@ -53,10 +42,10 @@ class AudioRepositoryImpl implements AudioRepository {
   }
 
   @override
-  Future<void> stopRecording() async {
-    await _recorder!.stopRecorder();
-    await _recorder!.closeRecorder();
+  Future<String?> stopRecording() async {
+    await _recorder.stopRecorder();
 
+    // 🔥 Esperar 500ms para asegurar que el archivo se guarde
     await Future.delayed(const Duration(milliseconds: 500));
 
     if (_currentFilePath == null || !File(_currentFilePath!).existsSync()) {
@@ -64,5 +53,6 @@ class AudioRepositoryImpl implements AudioRepository {
     }
 
     print("✅ Grabación finalizada: $_currentFilePath");
+    return _currentFilePath;
   }
 }

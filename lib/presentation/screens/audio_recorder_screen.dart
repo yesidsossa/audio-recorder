@@ -11,7 +11,6 @@ class AudioRecorderScreen extends ConsumerWidget {
     final isRecording = ref.watch(recordingStateProvider);
     final uploadProgress = ref.watch(uploadProgressProvider);
     final audioList = ref.watch(audioListProvider);
-    final recorder = ref.read(audioRecorderProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Audio Recorder')),
@@ -21,9 +20,9 @@ class AudioRecorderScreen extends ConsumerWidget {
           ElevatedButton(
             onPressed: () async {
               if (isRecording) {
-                await ref.read(stopAudioProvider)(ref, recorder);
+                await ref.read(stopAudioProvider)(ref);
               } else {
-                await ref.read(recordAudioProvider)(ref, recorder);
+                await ref.read(recordAudioProvider)(ref);
               }
             },
             child: Text(isRecording ? 'Detener' : 'Grabar'),
