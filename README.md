@@ -47,7 +47,7 @@ We use **Riverpod** to manage dependencies and global states efficiently. This a
 ## 🛠️ Technologies & Libraries Used
 | Technology | Description |
 |------------|------------|
-| **Flutter 3.x** | Main development framework |
+| **Flutter 3.29.2** | Main development framework |
 | **Riverpod** | State management and dependency injection |
 | **FlutterSound** | Audio recording functionality |
 | **Firebase Storage** | Cloud storage for audio files |
