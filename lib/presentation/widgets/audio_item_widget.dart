@@ -43,6 +43,7 @@ class _AudioItemWidgetState extends State<AudioItemWidget> {
       });
     } else {
       await _player!.stopPlayer();
+      _progressSubscription?.cancel();
 
       setState(() {
         _progress = 0.0;
@@ -52,7 +53,6 @@ class _AudioItemWidgetState extends State<AudioItemWidget> {
 
       await _player!.setSubscriptionDuration(const Duration(milliseconds: 500));
 
-      _progressSubscription?.cancel();
       _progressSubscription = _player!.onProgress!.listen((event) {
         if (mounted) {
           setState(() {
