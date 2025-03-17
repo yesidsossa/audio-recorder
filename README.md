@@ -41,23 +41,6 @@ We use **Riverpod** to manage dependencies and global states efficiently. This a
 |-----------|-----------|-----------|
 | ![Recording](docs/screenshot/loader.png) | ![Audio List](docs/screenshot/audio_list.png) | ![Audio List](docs/screenshot/recording.png) | 
 
----
-
-## 🚀 Continuous Integration (CI)
-This project includes a **CI pipeline using GitHub Actions** that automatically runs unit tests whenever a new commit is pushed.
-
-### 📌 **CI Workflow Steps**
-1. Runs `flutter analyze` to check for linting errors.
-2. Runs all **unit tests** using `flutter test`.
-3. If all tests pass ✅, the workflow completes successfully.
-4. If a test fails ❌, the PR cannot be merged until fixed.
-
-
-
-### 📊 **Viewing Test Results**
-1. Go to the **"Actions" tab** on GitHub.
-2. Select the workflow **"Flutter CI"**.
-3. Check the logs for execution details.
 
 ---
 
