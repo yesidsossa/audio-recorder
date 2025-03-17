@@ -52,10 +52,7 @@ This project includes a **CI pipeline using GitHub Actions** that automatically 
 3. If all tests pass ✅, the workflow completes successfully.
 4. If a test fails ❌, the PR cannot be merged until fixed.
 
-### 📂 **CI Configuration File**
-```yaml
-.github/workflows/flutter_ci.yml
-```
+
 
 ### 📊 **Viewing Test Results**
 1. Go to the **"Actions" tab** on GitHub.
