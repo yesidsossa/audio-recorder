@@ -1,13 +1,14 @@
 import 'dart:io';
-
 import 'package:firebase_storage/firebase_storage.dart';
 import '../../domain/entities/audio.dart';
+import '../../domain/datasources/audio_data_source.dart';
 
-class FirebaseAudioDataSource {
+class FirebaseAudioDataSource implements AudioDataSource {
   final FirebaseStorage storage;
 
   FirebaseAudioDataSource(this.storage);
 
+  @override
   Future<List<Audio>> getAudios() async {
     List<Audio> audioList = [];
     ListResult result = await storage.ref('audios').listAll();
@@ -19,6 +20,7 @@ class FirebaseAudioDataSource {
     return audioList;
   }
 
+  @override
   Future<String?> uploadAudio(String filePath) async {
     String fileName = 'audios/${DateTime.now().millisecondsSinceEpoch}.aac';
     Reference ref = storage.ref().child(fileName);

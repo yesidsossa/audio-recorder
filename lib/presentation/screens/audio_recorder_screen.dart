@@ -22,15 +22,16 @@ class AudioRecorderScreen extends ConsumerWidget {
               if (isRecording) {
                 String? result = await ref.read(stopAudioProvider)();
                 if (result != null) {
-                  ref.read(recordingStateProvider.notifier).state = false;
+                  ref.read(recordingStateProvider.notifier).stop();  // ✅ Ahora usa StateNotifier
                 }
               } else {
                 String? result = await ref.read(recordAudioProvider)();
                 if (result != null) {
-                  ref.read(recordingStateProvider.notifier).state = true;
+                  ref.read(recordingStateProvider.notifier).start();  // ✅ Ahora usa StateNotifier
                 }
               }
-            },
+            }
+            ,
             child: Text(isRecording ? 'Detener' : 'Grabar'),
           ),
           if (uploadProgress > 0 && uploadProgress < 1)

@@ -6,10 +6,10 @@ import '../sources/firebase_audio_data_source.dart';
 
 class AudioRepositoryImpl implements AudioRepository {
   final FirebaseAudioDataSource firebaseDataSource;
-  final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
+  final FlutterSoundRecorder _recorder;
   String? _currentFilePath;
 
-  AudioRepositoryImpl(this.firebaseDataSource);
+  AudioRepositoryImpl(this.firebaseDataSource,this._recorder);
 
   @override
   Future<String?> recordAudio() async {
